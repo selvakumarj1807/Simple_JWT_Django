@@ -1,0 +1,79 @@
+
+🛠 Django JWT Authentication Project Setup Guide
+===============================================
+
+📦 1. Create Project and App
+----------------------------
+$ django-admin startproject jwt_auth_project
+$ cd jwt_auth_project
+$ python manage.py startapp accounts
+
+📦 2. Install Required Packages
+------------------------------
+$ pip install djangorestframework djangorestframework-simplejwt
+$ pip install djangorestframework-simplejwt[crypto]  # for token blacklist
+
+📝 3. settings.py Changes
+-------------------------
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'accounts',
+]
+
+AUTH_USER_MODEL = 'accounts.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+🗂 4. accounts/models.py
+-------------------------
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+class User(AbstractUser):
+    pass
+
+📌 5. Migrate Database
+----------------------
+$ python manage.py makemigrations accounts
+$ python manage.py migrate
+
+📝 6. Create Serializers
+------------------------
+accounts/serializers.py:
+- RegisterSerializer
+- UserSerializer
+
+📝 7. Create Views
+------------------
+accounts/views.py:
+- RegisterView
+- UserListView
+- LogoutView (blacklists refresh token)
+
+🌐 8. Setup URLs
+----------------
+jwt_auth_project/urls.py:
+    path('api/', include('accounts.urls')),
+
+accounts/urls.py:
+    path('register/', RegisterView.as_view()),
+    path('login/', TokenObtainPairView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
+    path('accounts/', UserListView.as_view()),
+    path('logout/', LogoutView.as_view()),
+
+📤 9. Run Server
+----------------
+$ python manage.py runserver
+
+🧪 10. Test API (Postman or curl)
+---------------------------------
+Follow apiTestingGuide.txt for complete testing instructions.
+
+✅ Done! Your Django project is now ready with JWT-based Authentication.

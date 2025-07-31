@@ -1,0 +1,80 @@
+
+📘 JWT Authentication API Testing Guide (Django REST Framework)
+===============================================================
+
+🖥 BASE URL:
+http://127.0.0.1:8000/api/
+
+📌 1. REGISTER
+--------------
+POST /register/
+
+Headers:
+Content-Type: application/json
+
+Body:
+{
+  "username": "selva",
+  "email": "selva@example.com",
+  "password": "StrongPass123!"
+}
+
+📌 2. LOGIN
+-----------
+POST /login/
+
+Headers:
+Content-Type: application/json
+
+Body:
+{
+  "username": "selva",
+  "password": "StrongPass123!"
+}
+
+✅ Response:
+{
+  "refresh": "<your_refresh_token>",
+  "access": "<your_access_token>"
+}
+
+📌 3. VIEW ACCOUNTS
+-------------------
+GET /accounts/
+
+Headers:
+Authorization: Bearer <your_access_token>
+Content-Type: application/json
+
+📌 4. LOGOUT
+------------
+POST /logout/
+
+Headers:
+Authorization: Bearer <your_access_token>
+Content-Type: application/json
+
+Body:
+{
+  "refresh": "<your_refresh_token>"
+}
+
+✅ Expected Response:
+{
+  "detail": "Logged out successfully."
+}
+
+❗ If refresh token is already used or blacklisted:
+{
+  "error": "Token is blacklisted"
+}
+
+🧪 You can use Postman, cURL, or any HTTP client for testing.
+
+Example with curl:
+
+curl -X POST http://127.0.0.1:8000/api/logout/ \
+  -H "Authorization: Bearer <access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{"refresh": "<refresh_token>"}'
+
