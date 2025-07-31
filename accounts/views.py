@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
+# API Views
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
@@ -26,3 +28,19 @@ class LogoutView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=400)
 
+
+
+# HTML views
+from django.shortcuts import render
+
+def register_page(request):
+    return render(request, 'register.html')
+
+def login_page(request):
+    return render(request, 'login.html')
+
+def accounts_page(request):
+    return render(request, 'accounts.html')
+
+def logout_page(request):
+    return render(request, 'logout.html')

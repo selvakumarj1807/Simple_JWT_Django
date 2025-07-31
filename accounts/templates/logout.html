@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Logout</title>
+</head>
+
+<body>
+    <h2>Logging Out...</h2>
+    <script>
+        const refresh = localStorage.getItem("refresh");
+        fetch("/api/logout/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refresh })
+        }).then(() => {
+            localStorage.clear();
+            window.location.href = "/api/login-page/";
+        });
+    </script>
+</body>
+
+</html>

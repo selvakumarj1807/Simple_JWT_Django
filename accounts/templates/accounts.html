@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Accounts</title>
+</head>
+
+<body>
+    <h2>User List</h2>
+    <ul id="userList"></ul>
+    <a href="/api/logout-page/">Logout</a>
+
+    <script>
+        const access = localStorage.getItem("access");
+        fetch("/api/accounts/", {
+            headers: { "Authorization": "Bearer " + access }
+        })
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("userList");
+                data.forEach(user => {
+                    const li = document.createElement("li");
+                    li.textContent = `${user.username} (${user.email})`;
+                    list.appendChild(li);
+                });
+            });
+    </script>
+</body>
+
+</html>
